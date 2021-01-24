@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-require_relative "hot_pepper/version"
+require "hot_pepper/version"
+require "hot_pepper/client"
+require "hot_pepper/config"
 
 module HotPepper
   class Error < StandardError; end
