@@ -5,11 +5,13 @@ require "faraday"
 require "json"
 require "faraday_middleware"
 require "faraday/encoding"
+require_relative "query"
 require_relative "endpoints"
 
 module HotPepper
   class Client
     include Endpoints
+    include Query
 
     attr_accessor :endpoint, :api_key, :default_max_retries, :client
 
@@ -27,7 +29,7 @@ module HotPepper
     end
 
     Faraday::Connection::METHODS.each do |method|
-      define_method(method) do |url, args = {}|
+      define_method(method) do |url, args = {}, &block|
         response = client.__send__(method, url, args.reject { |_k, v| v.nil? }).body
         Hashie::Mash.new(JSON.parse(response))
       end
